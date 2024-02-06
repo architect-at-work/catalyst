@@ -4,15 +4,17 @@
 package org.andino.service;
 
 
-import org.andino.catalyst.Printer;
+import org.andino.catalyst.YamlPropertySourceFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 
 @SpringBootApplication
+@PropertySource(value = "classpath:config/datasource.yml", factory = YamlPropertySourceFactory.class)
 public class CatalystApplication {
 
     public static void main(String[] args) {
-        System.out.println(new Printer("Whatever"));
         SpringApplication.run(CatalystApplication.class, args);
     }
 

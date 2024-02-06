@@ -5,12 +5,19 @@ package org.andino.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.modulith.core.ApplicationModules;
+import org.springframework.modulith.docs.Documenter;
 
 @SpringBootTest
 class CatalystApplicationTests {
 
     @Test
     void contextLoads() {
+    }
+
+    @Test
+    void createModulithsDocumentation() {
+        new Documenter(ApplicationModules.of(CatalystApplication.class)).writeDocumentation();
     }
 
 }
