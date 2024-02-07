@@ -11,13 +11,19 @@ import org.springframework.modulith.docs.Documenter;
 @SpringBootTest
 class CatalystApplicationTests {
 
+    ApplicationModules modules = ApplicationModules.of(CatalystApplication.class);
+
     @Test
     void contextLoads() {
     }
 
     @Test
-    void createModulithsDocumentation() {
-        new Documenter(ApplicationModules.of(CatalystApplication.class)).writeDocumentation();
+    void writeDocumentationSnippets() {
+        new Documenter(modules)
+                .writeModulesAsPlantUml()
+                .writeIndividualModulesAsPlantUml();
+        new Documenter(modules)
+                .writeModuleCanvases();
     }
 
 }
