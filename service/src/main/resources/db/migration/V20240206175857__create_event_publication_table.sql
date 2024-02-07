@@ -1,11 +1,11 @@
 -- Need this table spring modulith
-CREATE TABLE IF NOT EXISTS EVENT_PUBLICATION
+CREATE TABLE IF NOT EXISTS public.event_publication
 (
-    ID               UUID NOT NULL,
-    COMPLETION_DATE  TIMESTAMP(9) WITH TIME ZONE,
-    EVENT_TYPE       VARCHAR(512) NOT NULL,
-    LISTENER_ID      VARCHAR(512) NOT NULL,
-    PUBLICATION_DATE TIMESTAMP(9) WITH TIME ZONE NOT NULL,
-    SERIALIZED_EVENT VARCHAR(4000) NOT NULL,
-    PRIMARY KEY (ID)
+    id               UUID NOT NULL,
+    listener_id      TEXT NOT NULL,
+    event_type       TEXT NOT NULL,
+    serialized_event TEXT NOT NULL,
+    publication_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    completion_date  TIMESTAMP WITH TIME ZONE,
+    PRIMARY KEY (id)
 )

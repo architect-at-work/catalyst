@@ -6,9 +6,7 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   flyway:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
-    user: ${DB_USER:postgres}
-    password: ${DB_PASSWORD:postgres}
+    schemas: service
     locations: classpath:/db/migration
     enabled: on
   jpa:
