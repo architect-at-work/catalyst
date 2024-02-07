@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -u
 
 # Get current timestamp
 timestamp=$(date +%Y%m%d%H%M%S)
