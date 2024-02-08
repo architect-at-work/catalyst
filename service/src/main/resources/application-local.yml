@@ -1,4 +1,16 @@
+server:
+  servlet:
+    context-path: ""
+  error:
+    whitelabel:
+      enabled: off
 spring:
   datasource:
     username: postgres
     password: postgres
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

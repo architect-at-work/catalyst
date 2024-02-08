@@ -1,3 +1,10 @@
+server:
+  servlet:
+    context-path: "/api/service-name"
+  error:
+    whitelabel:
+      enabled: off
+
 spring:
   main:
     banner-mode: off
@@ -5,3 +12,11 @@ spring:
   sql:
     init:
       mode: always
+
+management:
+  health:
+    db:
+      enabled: true
+  endpoint:
+    info:
+      enabled: on
