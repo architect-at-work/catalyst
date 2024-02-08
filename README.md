@@ -1,8 +1,14 @@
 # Service
 
-# Tools Integrated
+## Tools Integrated
 
 1. Flyway for database migration
+2. Test Container For integration testing
+
+## Steps to follow after cloning this for new service
+
+1. Find `schemaName` and replace with `$service-schema-name`
+
 
 ### Developer Tools
 

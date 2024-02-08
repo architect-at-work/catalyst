@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.util.Collections;
+import static java.util.Collections.singletonMap;
 
 public class PostgreSQLTestContainerExtension implements BeforeAllCallback, AfterAllCallback {
 
@@ -16,7 +16,7 @@ public class PostgreSQLTestContainerExtension implements BeforeAllCallback, Afte
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        System.out.println("PostgreSQL Container Running: " + postgreSQLContainer.isRunning());
+        System.out.println("PostgreSQL Container is Running: " + postgreSQLContainer.isRunning());
         startContainerIfNeed();
     }
 
@@ -27,8 +27,7 @@ public class PostgreSQLTestContainerExtension implements BeforeAllCallback, Afte
 
     private void startContainerIfNeed() {
         if (!postgreSQLContainer.isRunning()) {
-            postgreSQLContainer.withEnv(Collections.singletonMap("ACCEPT_EULA", "Y"))
-                    .withTmpFs(Collections.singletonMap("/testtmpfs", "rw"));
+            postgreSQLContainer.withEnv(singletonMap("ACCEPT_EULA", "Y")).withTmpFs(singletonMap("/testtmpfs", "rw"));
             postgreSQLContainer.start();
             System.setProperty("spring.datasource.url", postgreSQLContainer.getJdbcUrl());
             System.setProperty("spring.datasource.username", postgreSQLContainer.getUsername());
