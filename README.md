@@ -23,7 +23,12 @@
 
 2. To create migration file run
 
-```shell
-./migration-file-generator.sh {description}
-#./migration-file-generator.sh create_user_table
-```
+   ```shell
+   ./migration-file-generator.sh {description}
+   #./migration-file-generator.sh create_user_table
+   ```
+
+3. Running the app in `local` profile using gradle
+   ```shell
+   ./gradlew bootRun  --args='--spring.profiles.active=local'
+   ```

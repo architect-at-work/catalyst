@@ -16,9 +16,9 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 /// For Removal and testing multiple
 @DataJpaTest
-@Testcontainers
 @AutoConfigureTestDatabase(replace = NONE)
 @PostgreSQLContainer
+@Testcontainers
 class ProductRepositoryDuplicateTest {
 
 
