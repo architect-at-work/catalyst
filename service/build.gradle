@@ -35,7 +35,6 @@ dependencies {
     testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
     testImplementation 'org.testcontainers:postgresql:1.19.4'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.4'
-    testImplementation 'org.testcontainers:testcontainers:1.19.4'
 
     implementation project(":library")
     compileOnly 'org.projectlombok:lombok'
