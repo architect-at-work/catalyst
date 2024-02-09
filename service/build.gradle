@@ -12,7 +12,7 @@ plugins {
     id 'org.openapi.generator' version '7.3.0'
 }
 
-apply from: "swagger.gradle"
+apply from: "../gradle/swagger.gradle"
 
 group = 'org.andino'
 version = '0.0.1-SNAPSHOT'
