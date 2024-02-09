@@ -12,6 +12,8 @@ plugins {
     id 'org.openapi.generator' version '7.3.0'
 }
 
+apply from: "swagger.gradle"
+
 group = 'org.andino'
 version = '0.0.1-SNAPSHOT'
 
@@ -75,21 +77,3 @@ test {
     finalizedBy jacocoTestReport
 }
 
-openApiGenerate {
-    generatorName = "spring"
-    inputSpec = "$projectDir/src/main/resources/product.yml"
-    outputDir = "$projectDir/build/generated"
-    apiPackage = "org.andino.service.product"
-    invokerPackage = "org.andino.service.product"
-    modelPackage = "org.andino.service.product.models"
-    configOptions = [
-            dateLibrary  : "java8",
-            interfaceOnly: "true",
-            useSpringBoot3: "true"
-    ]
-}
-
-compileJava.dependsOn tasks.openApiGenerate
-processResources.dependsOn tasks.openApiGenerate
-sourceSets.main.java.srcDir "$projectDir/build/generated/src/main/java"
-sourceSets.main.resources.srcDir "$projectDir/build/generated/src/main/resources"

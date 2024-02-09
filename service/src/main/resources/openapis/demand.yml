@@ -1,0 +1,28 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Demand Service
+servers:
+  - url: http://localhost:8080
+paths:
+  /demand/greeting:
+    get:
+      summary: Gets Hello World
+      operationId: greeting
+      tags:
+        - greeting
+      responses:
+        '200':
+          description: Hello World
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Greeting"
+components:
+  schemas:
+    Greeting:
+      required:
+        - text
+      properties:
+        text:
+          type: string

@@ -1,11 +1,11 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Hello World!
+  title: Product Service
 servers:
   - url: http://localhost:8080
 paths:
-  /hello:
+  /product/hello:
     get:
       summary: Gets Hello World
       operationId: hello
@@ -17,10 +17,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Hello"
+                $ref: "#/components/schemas/Greeting"
 components:
   schemas:
-    Hello:
+    Greeting:
       required:
         - text
       properties:

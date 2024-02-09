@@ -1,0 +1,49 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:7.2.0"
+    }
+}
+
+apply plugin: "org.openapi.generator"
+
+void createOpenApiGenerateTask(String serviceName) {
+    String taskName = "openApiGenerate_" + serviceName;
+    tasks.register(taskName, GenerateTask) {
+        inputSpec = "$projectDir/src/main/resources/openapis/${serviceName}.yml".toString()
+        generatorName = "spring"
+        outputDir = "$projectDir/build/generated"
+        apiPackage = "org.andino.service.$serviceName"
+        invokerPackage = "org.andino.service.$serviceName"
+        modelPackage = "org.andino.service.${serviceName}.models"
+        configOptions = [
+                dateLibrary   : "java8",
+                interfaceOnly : "true",
+                useSpringBoot3: "true"
+        ]
+    }
+    compileJava.dependsOn(taskName)
+    processResources.dependsOn(taskName)
+}
+String[] serviceNames = [
+        "product",
+        "demand"
+]
+for (String serviceName : serviceNames) {
+    createOpenApiGenerateTask(serviceName);
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir file("$projectDir/build/generated/src/main/java")
+        }
+        resources {
+            srcDir file("$projectDir/build/generated/src/main/resources")
+        }
+    }
+}
