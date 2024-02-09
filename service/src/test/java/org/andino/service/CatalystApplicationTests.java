@@ -23,6 +23,7 @@ class CatalystApplicationTests {
 
     @Test
     void contextLoads() {
+        modules.verify();
     }
 
     @Test
