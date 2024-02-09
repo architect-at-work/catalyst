@@ -9,6 +9,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'jacoco'
+    id 'org.openapi.generator' version '7.3.0'
 }
 
 group = 'org.andino'
@@ -26,6 +27,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation 'org.springframework.modulith:spring-modulith-starter-core'
     implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0-M1'
+
 
     runtimeOnly 'org.springframework.modulith:spring-modulith-actuator'
     runtimeOnly 'org.springframework.boot:spring-boot-starter-actuator'
@@ -42,6 +45,9 @@ dependencies {
     implementation project(":library")
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'io.swagger.parser.v3:swagger-parser:2.1.20'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
 }
 
 dependencyManagement {
@@ -68,3 +74,22 @@ test {
     systemProperty 'spring.profiles.active', 'test'
     finalizedBy jacocoTestReport
 }
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/product.yml"
+    outputDir = "$projectDir/build/generated"
+    apiPackage = "org.andino.service.product"
+    invokerPackage = "org.andino.service.product"
+    modelPackage = "org.andino.service.product.models"
+    configOptions = [
+            dateLibrary  : "java8",
+            interfaceOnly: "true",
+            useSpringBoot3: "true"
+    ]
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+processResources.dependsOn tasks.openApiGenerate
+sourceSets.main.java.srcDir "$projectDir/build/generated/src/main/java"
+sourceSets.main.resources.srcDir "$projectDir/build/generated/src/main/resources"
