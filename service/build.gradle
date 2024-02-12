@@ -171,3 +171,19 @@ spotbugs {
     excludeFilter = file("${rootProject.projectDir}/tools/spotbugs/exclude.xml")
     maxHeapSize = '1g'
 }
+
+tasks.register("tree") {
+    def styler = 'black red green yellow blue magenta cyan white'
+            .split().toList().withIndex(30)
+            .collectEntries { key, val -> [(key) : { "\033[${val}m${it}\033[0m" }] }
+    dependsOn build
+    gradle.taskGraph.whenReady { taskGraph ->
+       println("${styler['green']('Found')} ${styler['red'](taskGraph.allTasks.size())} ${styler['green']('Tasks.')}")
+        taskGraph.allTasks.forEach { task ->
+            println("${styler['green'](task)}")
+            task.dependsOn.forEach { dep ->
+                println("${styler['yellow']('    -')}${styler['magenta'](dep)}")
+            }
+        }
+    }
+}
