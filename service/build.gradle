@@ -13,6 +13,7 @@ plugins {
     id 'jacoco'
     id 'org.openapi.generator' version '7.3.0'
     id 'io.spring.javaformat' version '0.0.41'
+    id 'checkstyle'
 }
 
 apply from: "../gradle/swagger.gradle"
@@ -118,10 +119,10 @@ private excludedClassFilesForReport(classDirectories) {
     classDirectories.setFrom(files(classDirectories.files.collect {
         fileTree(dir: it, exclude: [
                 'org/andino/service/CatalystApplication.class',
-                'org/andino/service/product/dto',
-                'org/andino/service/demand/api',
-                'org/andino/service/demand/dto',
-                'org/andino/service/product/api'
+                'org/andino/service/product/dto/*',
+                'org/andino/service/demand/api/*',
+                'org/andino/service/demand/dto/*',
+                'org/andino/service/product/api/*'
         ])
     }))
 }
@@ -133,4 +134,9 @@ tasks.withType(CheckFormat).configureEach {
     exclude "org/andino/service/demand/api"
     exclude "org/andino/service/product/dto"
     exclude "org/andino/service/demand/dto"
+}
+
+checkstyle {
+    toolVersion = '10.12.0'
+    configDirectory = file("${rootProject.projectDir}/tools/checkstyle")
 }
