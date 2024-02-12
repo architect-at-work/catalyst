@@ -1,3 +1,4 @@
+import com.github.spotbugs.snom.Effort
 import io.spring.javaformat.gradle.tasks.CheckFormat
 
 /*
@@ -14,17 +15,18 @@ plugins {
     id 'org.openapi.generator' version '7.3.0'
     id 'io.spring.javaformat' version '0.0.41'
     id 'checkstyle'
+    id 'com.github.spotbugs' version '5.1.5'
 }
 
-apply from: "../gradle/swagger.gradle"
+apply from: '../gradle/swagger.gradle'
 
 group = 'org.andino'
 version = '0.0.1-SNAPSHOT'
 
 
 ext {
-    set('springCloudVersion', "2023.0.0")
-    set('springModulithVersion', "1.1.2")
+    set('springCloudVersion', '2023.0.0')
+    set('springModulithVersion', '1.1.2')
 }
 
 dependencies {
@@ -43,14 +45,14 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:10.1.0'
     implementation 'org.flywaydb:flyway-database-postgresql:10.1.0'
 
-    implementation project(":library")
+    implementation project(':library')
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'io.swagger.parser.v3:swagger-parser:2.1.20'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
 
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
 testing {
@@ -81,7 +83,7 @@ dependencyManagement {
 }
 
 jacoco {
-    toolVersion = "0.8.11"
+    toolVersion = '0.8.11'
 }
 
 jacocoTestReport {
@@ -130,13 +132,42 @@ private excludedClassFilesForReport(classDirectories) {
 check.dependsOn jacocoTestCoverageVerification
 
 tasks.withType(CheckFormat).configureEach {
-    exclude "org/andino/service/product/api"
-    exclude "org/andino/service/demand/api"
-    exclude "org/andino/service/product/dto"
-    exclude "org/andino/service/demand/dto"
+    exclude 'org/andino/service/product/api'
+    exclude 'org/andino/service/demand/api'
+    exclude 'org/andino/service/product/dto'
+    exclude 'org/andino/service/demand/dto'
 }
 
 checkstyle {
     toolVersion = '10.12.0'
     configDirectory = file("${rootProject.projectDir}/tools/checkstyle")
+}
+
+tasks.spotbugsMain {
+    reports.create("html") {
+        required = true
+        outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+        setStylesheet("fancy-hist.xsl")
+    }
+}
+
+tasks.spotbugsTest {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/test/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
+
+spotbugs {
+    toolVersion = '4.8.0'
+    ignoreFailures = false
+    showStackTraces = true
+    showProgress = true
+    effort = Effort.DEFAULT
+    reportLevel = 'default'
+    excludeFilter = file("${rootProject.projectDir}/tools/spotbugs/exclude.xml")
+    maxHeapSize = '1g'
 }
