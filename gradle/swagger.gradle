@@ -1,4 +1,5 @@
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+import org.openapitools.generator.gradle.plugin.tasks.ValidateTask
 
 buildscript {
     repositories {
@@ -13,6 +14,11 @@ apply plugin: "org.openapi.generator"
 
 void createOpenApiGenerateTask(String serviceName) {
     String taskName = "openApiGenerate_" + serviceName;
+    String validateTaskName = "openApiValidate_" + serviceName;
+    tasks.register(validateTaskName, ValidateTask) {
+        inputSpec = "$projectDir/src/main/resources/openapis/${serviceName}.yml".toString()
+        recommend = true
+    }
     tasks.register(taskName, GenerateTask) {
         inputSpec = "$projectDir/src/main/resources/openapis/${serviceName}.yml".toString()
         generatorName = "spring"
@@ -20,20 +26,20 @@ void createOpenApiGenerateTask(String serviceName) {
         apiPackage = "org.andino.service.${serviceName}.api"
         invokerPackage = "org.andino.service.${serviceName}.api"
         modelPackage = "org.andino.service.${serviceName}.dto"
-        configOptions = [
-                dateLibrary   : "java8",
-                interfaceOnly : "true",
-                useSpringBoot3: "true"
-        ]
+        configOptions = [dateLibrary   : "java8",
+                         interfaceOnly : "true",
+                         useSpringBoot3: "true"]
+        dependsOn validateTaskName
     }
+
     compileJava.dependsOn(taskName)
     processResources.dependsOn(taskName)
     checkFormatMain.dependsOn(taskName)
+
 }
-String[] serviceNames = [
-        "product",
-        "demand"
-]
+
+String[] serviceNames = ["product",
+                         "demand"]
 for (String serviceName : serviceNames) {
     createOpenApiGenerateTask(serviceName)
 }
