@@ -20,24 +20,22 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @Testcontainers
 class ProductRepositoryTest {
 
+	@Autowired
+	ProductRepository productRepository;
 
-    @Autowired
-    ProductRepository productRepository;
+	@Test
+	void testEmptyProduct() {
+		productRepository.save(new Product(new ProductId(1L), new Quantity(new BigDecimal(1), "number")));
 
+		Optional<Product> product = productRepository.findById(new ProductId(1L));
 
-    @Test
-    void testEmptyProduct() {
-        productRepository.save(new Product(new ProductId(1L), new Quantity(new BigDecimal(1), "number")));
+		assertThat(product).isNotEmpty();
+		assertThat(product.get().getQuantity().getCount()).isEqualByComparingTo(new BigDecimal(1));
+	}
 
-        Optional<Product> product = productRepository.findById(new ProductId(1L));
-
-        assertThat(product).isNotEmpty();
-        assertThat(product.get().getQuantity().getCount()).isEqualByComparingTo(new BigDecimal(1));
-    }
-
-    @AfterEach
-    void cleanup() {
-        productRepository.deleteAll();
-    }
+	@AfterEach
+	void cleanup() {
+		productRepository.deleteAll();
+	}
 
 }

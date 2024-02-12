@@ -32,3 +32,16 @@
    ```shell
    ./gradlew bootRun  --args='--spring.profiles.active=local'
    ```
+
+4. Code Formatter
+
+   1. Download the plugin
+      from [spring-javaformat-intellij-idea-plugin-0.0.41.jar](https://repo1.maven.org/maven2/io/spring/javaformat/spring-javaformat-intellij-idea-plugin/0.0.41/).
+      One with size 14711484
+   2. Open Intellij -> Settings -> Plugins -> Click on 3 dots after Installed -> Install plugin from Disk -> Select the
+      aforementioned jar
+   3. Restart the Intellij
+   4. From now on, CMD + Option + L or Auto Format would format the files automatically
+
+   > Note **./gradlew build** would fail, if format is wrong, however **./gradlew format** would auto format files for
+   > you :)

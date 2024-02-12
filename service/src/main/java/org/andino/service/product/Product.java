@@ -13,17 +13,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-    @EmbeddedId
-    @AttributeOverride(name = "id", column = @Column(name = "id"))
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private ProductId id;
 
+	@EmbeddedId
+	@AttributeOverride(name = "id", column = @Column(name = "id"))
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private ProductId id;
 
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "count", column = @Column(name = "quantity")),
-            @AttributeOverride(name = "unit", column = @Column(name = "quantity_unit"))
-    })
-    private Quantity quantity;
+	@Embedded
+	@AttributeOverrides({ @AttributeOverride(name = "count", column = @Column(name = "quantity")),
+			@AttributeOverride(name = "unit", column = @Column(name = "quantity_unit")) })
+	private Quantity quantity;
+
 }
-

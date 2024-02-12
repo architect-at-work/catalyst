@@ -19,20 +19,17 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @PostgreSQLContainer
 class CatalystApplicationTests {
 
-    ApplicationModules modules = ApplicationModules.of(CatalystApplication.class);
+	ApplicationModules modules = ApplicationModules.of(CatalystApplication.class);
 
-    @Test
-    void contextLoads() {
-        modules.verify();
-    }
+	@Test
+	void contextLoads() {
+		modules.verify();
+	}
 
-    @Test
-    void writeDocumentationSnippets() {
-        new Documenter(modules)
-                .writeModulesAsPlantUml()
-                .writeIndividualModulesAsPlantUml();
-        new Documenter(modules)
-                .writeModuleCanvases();
-    }
+	@Test
+	void writeDocumentationSnippets() {
+		new Documenter(modules).writeModulesAsPlantUml().writeIndividualModulesAsPlantUml();
+		new Documenter(modules).writeModuleCanvases();
+	}
 
 }

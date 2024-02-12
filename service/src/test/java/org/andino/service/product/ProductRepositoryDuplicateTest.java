@@ -21,26 +21,24 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @Testcontainers
 class ProductRepositoryDuplicateTest {
 
+	@Autowired
+	ProductRepository productRepository;
 
-    @Autowired
-    ProductRepository productRepository;
+	@Test
+	void testNonEmptyProductWithMultipleProducts() {
+		productRepository.save(new Product(new ProductId(1L), new Quantity(new BigDecimal(1), "number")));
+		productRepository.save(new Product(new ProductId(2L), new Quantity(new BigDecimal(5), "litre")));
 
+		Optional<Product> product = productRepository.findById(new ProductId(2L));
 
-    @Test
-    void testNonEmptyProductWithMultipleProducts() {
-        productRepository.save(new Product(new ProductId(1L), new Quantity(new BigDecimal(1), "number")));
-        productRepository.save(new Product(new ProductId(2L), new Quantity(new BigDecimal(5), "litre")));
+		assertThat(product).isNotEmpty();
+		assertThat(product.get().getQuantity().getCount()).isEqualByComparingTo(new BigDecimal(5));
+		assertThat(product.get().getQuantity().getUnit()).isEqualTo("litre");
+	}
 
-        Optional<Product> product = productRepository.findById(new ProductId(2L));
-
-        assertThat(product).isNotEmpty();
-        assertThat(product.get().getQuantity().getCount()).isEqualByComparingTo(new BigDecimal(5));
-        assertThat(product.get().getQuantity().getUnit()).isEqualTo("litre");
-    }
-
-    @AfterEach
-    void cleanup() {
-        productRepository.deleteAll();
-    }
+	@AfterEach
+	void cleanup() {
+		productRepository.deleteAll();
+	}
 
 }

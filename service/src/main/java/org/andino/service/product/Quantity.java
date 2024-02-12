@@ -15,7 +15,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Quantity implements Serializable {
-    BigDecimal count;
 
-    String unit;
+	BigDecimal count;
+
+	String unit;
+
 }

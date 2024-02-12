@@ -17,9 +17,9 @@ void createOpenApiGenerateTask(String serviceName) {
         inputSpec = "$projectDir/src/main/resources/openapis/${serviceName}.yml".toString()
         generatorName = "spring"
         outputDir = "$projectDir/build/generated"
-        apiPackage = "org.andino.service.$serviceName"
-        invokerPackage = "org.andino.service.$serviceName"
-        modelPackage = "org.andino.service.${serviceName}.models"
+        apiPackage = "org.andino.service.${serviceName}.api"
+        invokerPackage = "org.andino.service.${serviceName}.api"
+        modelPackage = "org.andino.service.${serviceName}.dto"
         configOptions = [
                 dateLibrary   : "java8",
                 interfaceOnly : "true",
@@ -28,13 +28,14 @@ void createOpenApiGenerateTask(String serviceName) {
     }
     compileJava.dependsOn(taskName)
     processResources.dependsOn(taskName)
+    checkFormatMain.dependsOn(taskName)
 }
 String[] serviceNames = [
         "product",
         "demand"
 ]
 for (String serviceName : serviceNames) {
-    createOpenApiGenerateTask(serviceName);
+    createOpenApiGenerateTask(serviceName)
 }
 
 sourceSets {

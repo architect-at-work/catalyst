@@ -15,6 +15,6 @@ import java.io.Serializable;
 @Setter
 public class ProductId implements Serializable {
 
-    private Long id;
+	private Long id;
 
 }
