@@ -51,6 +51,7 @@ jobs:
         run: |
           TAG_NAME=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
           VERSION=$(echo $TAG_NAME | sed 's|^library-||')
+          echo "Extracted version $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Publish with Gradle
