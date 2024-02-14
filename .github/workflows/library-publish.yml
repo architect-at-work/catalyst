@@ -59,6 +59,6 @@ jobs:
           GPR_USER: ${{ github.actor }}
           GPR_KEY: ${{ secrets.TOKEN_FOR_COMMONS }}
         run: |
-          VERSION="${{ needs.build.outputs.version }}"
+          VERSION="${{ needs.publish.outputs.version }}"
           ./gradlew :library:publish -PprojectVersion=$VERSION
           echo "Published library commons version $VERSION"
