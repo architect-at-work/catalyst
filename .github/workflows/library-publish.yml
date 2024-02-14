@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -29,6 +29,11 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew :library:build
 
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Extract version from tag
         id: extract_version
         run: |
@@ -37,7 +42,11 @@ jobs:
           echo "::set-output name=version::$VERSION"
 
       - name: Publish with Gradle
-        run: ./gradlew :library:publish -PprojectVersion=${{ steps.extract_version.outputs.version }}
+        if: success()
         env:
           GPR_USER: ${{ github.actor }}
-          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+          GPR_KEY: ${{ secrets.TOKEN_FOR_COMMONS }}
+        run: |
+          VERSION=${{ needs.build.outputs.version }}
+          ./gradlew :library:publish -PprojectVersion=${{ steps.extract_version.outputs.version }}
+          echo "Published library commons version $VERSION"
