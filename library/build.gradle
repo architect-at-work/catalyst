@@ -11,6 +11,7 @@ plugins {
     id 'io.spring.javaformat' version '0.0.41'
     id 'checkstyle'
     id 'com.github.spotbugs' version '5.1.5'
+    id 'maven-publish'
 }
 
 dependencies {
@@ -91,4 +92,31 @@ spotbugs {
     reportLevel = 'default'
     excludeFilter = file("${rootProject.projectDir}/library/tools/spotbugs/exclude.xml")
     maxHeapSize = '1g'
+}
+
+group = 'org.andino'
+def defaultVersion = '1.0'
+version = project.findProperty('projectVersion') ?: System.getenv('PROJECT_VERSION') ?: defaultVersion
+description = 'Common resources which could be used across services'
+
+def githubUsername = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+def githubPassword = project.findProperty("gpr.key") ?: System.getenv("GPR_KEY")
+
+publishing {
+    repositories {
+        maven {
+            name = "inventory-commons"
+            url = uri("https://maven.pkg.github.com/architect-at-work/inventory-common-library")
+            credentials {
+                username = githubUsername
+                password = githubPassword
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            artifactId = 'inventory-commons'
+            from(components.java)
+        }
+    }
 }

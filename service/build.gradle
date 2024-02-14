@@ -7,6 +7,7 @@ import io.spring.javaformat.gradle.tasks.CheckFormat
  * This project uses @Incubating APIs which are subject to change.
  */
 
+
 plugins {
     id 'buildlogic.java-application-conventions'
     id 'org.springframework.boot' version '3.2.2'
@@ -45,7 +46,7 @@ dependencies {
     implementation 'org.flywaydb:flyway-core:10.1.0'
     implementation 'org.flywaydb:flyway-database-postgresql:10.1.0'
 
-    implementation project(':library')
+    implementation 'org.andino:inventory-commons:1.0.0'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -175,15 +176,30 @@ spotbugs {
 tasks.register("tree") {
     def styler = 'black red green yellow blue magenta cyan white'
             .split().toList().withIndex(30)
-            .collectEntries { key, val -> [(key) : { "\033[${val}m${it}\033[0m" }] }
+            .collectEntries { key, val -> [(key): { "\033[${val}m${it}\033[0m" }] }
     dependsOn build
     gradle.taskGraph.whenReady { taskGraph ->
-       println("${styler['green']('Found')} ${styler['red'](taskGraph.allTasks.size())} ${styler['green']('Tasks.')}")
+        println("${styler['green']('Found')} ${styler['red'](taskGraph.allTasks.size())} ${styler['green']('Tasks.')}")
         taskGraph.allTasks.forEach { task ->
             println("${styler['green'](task)}")
             task.dependsOn.forEach { dep ->
                 println("${styler['yellow']('    -')}${styler['magenta'](dep)}")
             }
+        }
+    }
+}
+
+def githubUsername = project.findProperty("gpr.user") ?: System.getenv("GPR_USER")
+def githubPassword = project.findProperty("gpr.key") ?: System.getenv("GPR_KEY")
+
+repositories {
+    mavenCentral()
+    maven {
+        url = uri("https://maven.pkg.github.com/architect-at-work/inventory-common-library")
+        credentials {
+            username = githubUsername
+            password = githubPassword
+            println(username)
         }
     }
 }
