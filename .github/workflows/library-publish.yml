@@ -51,7 +51,8 @@ jobs:
         run: |
           TAG_NAME=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
           VERSION=$(echo $TAG_NAME | sed 's|^library-||')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version $VERSION"
+          echo "version=$VERSION" >> $GITHUB_ENV
 
       - name: Publish with Gradle
         if: success()
@@ -59,6 +60,6 @@ jobs:
           GPR_USER: ${{ github.actor }}
           GPR_KEY: ${{ secrets.TOKEN_FOR_COMMONS }}
         run: |
-          VERSION="${{ needs.publish.outputs.version }}"
+          VERSION="${{ env.version }}"
           ./gradlew :library:publish -PprojectVersion=$VERSION
           echo "Published library commons version $VERSION"
