@@ -1,0 +1,43 @@
+name: Publish Library Package
+
+on:
+  push:
+    tags:
+      - 'library-*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a
+
+      - name: Build with Gradle
+        run: ./gradlew :library:build
+
+      - name: Extract version from tag
+        id: extract_version
+        run: |
+          TAG_NAME=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
+          VERSION=$(echo $TAG_NAME | sed 's|^library-||')
+          echo "::set-output name=version::$VERSION"
+
+      - name: Publish with Gradle
+        run: ./gradlew :library:publish -PprojectVersion=${{ steps.extract_version.outputs.version }}
+        env:
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
