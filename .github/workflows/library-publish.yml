@@ -34,12 +34,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@ec92e829475ac0c2315ea8f9eced72db85bb337a
+
       - name: Extract version from tag
         id: extract_version
         run: |
           TAG_NAME=$(echo ${{ github.ref }} | sed 's|refs/tags/||')
           VERSION=$(echo $TAG_NAME | sed 's|^library-||')
-          echo "::set-output name=version::$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Publish with Gradle
         if: success()
@@ -47,6 +59,6 @@ jobs:
           GPR_USER: ${{ github.actor }}
           GPR_KEY: ${{ secrets.TOKEN_FOR_COMMONS }}
         run: |
-          VERSION=${{ needs.build.outputs.version }}
-          ./gradlew :library:publish -PprojectVersion=${{ steps.extract_version.outputs.version }}
+          VERSION="${{ needs.build.outputs.version }}"
+          ./gradlew :library:publish -PprojectVersion=$VERSION
           echo "Published library commons version $VERSION"

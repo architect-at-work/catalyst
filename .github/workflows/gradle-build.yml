@@ -2,8 +2,8 @@ name: Build Entire Service
 
 on:
   push:
-    tags:
-      - 'library-*'
+    branches:
+      - 'main'
 
 jobs:
   build:
