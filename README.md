@@ -8,6 +8,12 @@
 ## Steps to follow after cloning this for new service
 
 1. Find `schemaName` and replace with `$service-schema-name`
+2. Create or Update global ~/.gradle/gradle.properties with username and password for package manager
+    ```shell
+    # Warning: Don't put any quotes when you are setting gradle.properties
+    gpr.user=<<github_username>>
+    gpr.key=<<githib_token_to_read_package>>
+    ```
 
 ### Developer Tools
 
