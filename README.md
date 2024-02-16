@@ -12,7 +12,7 @@
     ```shell
     # Warning: Don't put any quotes when you are setting gradle.properties
     gpr.user=<<github_username>>
-    gpr.key=<<githib_token_to_read_package>>
+    gpr.key=<<github_token_to_read_package>>
     ```
 
 ### Developer Tools
@@ -56,3 +56,10 @@
        ```shell
        ./gradlew tree
        ```
+
+6. To run as docker container
+    ```shell
+    ./gradlew :service:bootjar
+   docker build -t myorg/myservice .
+   docker run -p 9000:9000 myorg/myapp -e "JAVA_OPTS=-Xmx128m" --DB_HOST=host.docker.internal --DB_USER=<<username>> --DB_PASSWORD=<<password>> --server.port=9000
+    ```
